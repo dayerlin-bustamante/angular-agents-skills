@@ -1,0 +1,5 @@
+description: Review Angular PRs and code for best practices, performance issues, and modern patterns.
+mode: subagent
+permission:
+  edit: allow
+  bash: ask

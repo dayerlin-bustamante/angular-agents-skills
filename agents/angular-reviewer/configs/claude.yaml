@@ -1,0 +1,3 @@
+name: angular-reviewer
+description: Review Angular PRs and code for best practices, performance issues, and modern patterns.
+tools: Read, Grep, Glob, Edit, Write, Bash

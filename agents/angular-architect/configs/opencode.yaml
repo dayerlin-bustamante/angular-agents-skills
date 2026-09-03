@@ -1,0 +1,5 @@
+description: Generate Angular architecture, components, and libraries following project conventions.
+mode: subagent
+permission:
+  edit: allow
+  bash: ask

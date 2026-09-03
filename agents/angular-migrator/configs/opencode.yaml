@@ -1,0 +1,5 @@
+description: Migrate legacy Angular code to modern patterns.
+mode: subagent
+permission:
+  edit: allow
+  bash: ask

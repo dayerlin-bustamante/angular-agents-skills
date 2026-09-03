@@ -1,0 +1,3 @@
+name: angular-migrator
+description: Migrate legacy Angular code to modern patterns.
+tools: Read, Grep, Glob, Edit, Write, Bash

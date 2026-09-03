@@ -1,0 +1,45 @@
+{
+  "name": "angular-ai",
+  "version": "1.0.0",
+  "description": "Install Angular agents and skills for AI coding tools",
+  "type": "module",
+  "bin": {
+    "angular-ai": "dist/src/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "node --test dist/tests/**/*.test.js",
+    "test:watch": "node --test --watch dist/tests/**/*.test.js",
+    "lint": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "angular",
+    "ai",
+    "agents",
+    "opencode",
+    "claude",
+    "codex",
+    "skills",
+    "coding"
+  ],
+  "author": "Dayerlin Bustamante",
+  "license": "MIT",
+  "dependencies": {
+    "yaml": "^2.7.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "@types/node": "^22.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "dist",
+    "agents",
+    "skills",
+    "adapters"
+  ]
+}
