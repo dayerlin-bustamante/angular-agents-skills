@@ -1,10 +1,10 @@
 {
   "name": "angular-agents-skills",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Install Angular agents and skills for AI coding tools",
   "type": "module",
   "bin": {
-    "angular-ai": "dist/src/cli.js"
+    "angular-agents-skills": "dist/src/cli.js"
   },
   "scripts": {
     "build": "tsc",

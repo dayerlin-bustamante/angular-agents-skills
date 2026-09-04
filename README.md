@@ -92,47 +92,47 @@ npm install angular-agents-skills
 
 ```bash
 # OpenCode
-npx angular-ai agent angular-architect --ai opencode
+npx angular-agents-skills agent angular-architect --ai opencode
 
 # Claude Code
-npx angular-ai agent angular-architect --ai claude
+npx angular-agents-skills agent angular-architect --ai claude
 
 # Codex
-npx angular-ai agent angular-architect --ai codex
+npx angular-agents-skills agent angular-architect --ai codex
 
 # Cursor
-npx angular-ai agent angular-architect --ai cursor
+npx angular-agents-skills agent angular-architect --ai cursor
 
 # Copilot
-npx angular-ai agent angular-architect --ai copilot
+npx angular-agents-skills agent angular-architect --ai copilot
 ```
 
 ### Instalar un agent para todas las herramientas
 
 ```bash
-npx angular-ai agent angular-architect --all
+npx angular-agents-skills agent angular-architect --all
 ```
 
 ### Instalar una skill
 
 ```bash
-npx angular-ai skill signals-state-management --ai opencode
-npx angular-ai skill defer-blocks --all
+npx angular-agents-skills skill signals-state-management --ai opencode
+npx angular-agents-skills skill defer-blocks --all
 ```
 
 ### Directorio personalizado
 
 ```bash
-npx angular-ai agent angular-architect --ai opencode --target ./my-agents
-npx angular-ai skill signals-effects --ai claude --target ./my-skills
+npx angular-agents-skills agent angular-architect --ai opencode --target ./my-agents
+npx angular-agents-skills skill signals-effects --ai claude --target ./my-skills
 ```
 
 ### Listar recursos disponibles
 
 ```bash
-npx angular-ai list agents
-npx angular-ai list skills
-npx angular-ai list adapters
+npx angular-agents-skills list agents
+npx angular-agents-skills list skills
+npx angular-agents-skills list adapters
 ```
 
 ---
