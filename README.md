@@ -126,11 +126,13 @@ registerAdapter(createMyToolAdapter());
 
 ## 🏗️ Architecture & New Adapters
 
+```bash
 angular-agents-skills/
 ├── agents/    # Markdown puro + configs YAML
 ├── skills/    # Conocimiento clasificado (SKILL.md)
 ├── adapters/  # Conversores específicos por AI
 └── src/       # CLI y motor de distribución
+```
 
 ## 💻 Development
 ### Instalar dependencias
