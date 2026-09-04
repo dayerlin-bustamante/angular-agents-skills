@@ -123,20 +123,29 @@ import { createMyToolAdapter } from '../adapters/my-tool/index.js';
 
 registerAdapter(createMyToolAdapter());
 ```
-## Development
-# Instalar dependencias
+
+## 🏗️ Architecture & New Adapters
+
+angular-agents-skills/
+├── agents/    # Markdown puro + configs YAML
+├── skills/    # Conocimiento clasificado (SKILL.md)
+├── adapters/  # Conversores específicos por AI
+└── src/       # CLI y motor de distribución
+
+## 💻 Development
+### Instalar dependencias
 npm install
 
-# Compilar TypeScript
+### Compilar TypeScript
 npm run build
 
-# Modo watch durante desarrollo
+### Modo watch durante desarrollo
 npm run dev
 
-# Ejecutar tests
+### Ejecutar tests
 npm test
 
-# Probar la CLI localmente sin publicar
+### Probar la CLI localmente sin publicar
 node dist/src/cli.js list skills
 node dist/src/cli.js skill defer-blocks --ai cursor
 
