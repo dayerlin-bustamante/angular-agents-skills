@@ -1,202 +1,298 @@
-# Angular AI
+# angular-agents-skills
 
-> AI-agnostic Angular agents and skills for any coding tool.
+> Instala conocimiento Angular production-ready en tu agente de AI coding.
 
-Install production-ready Angular knowledge into your AI coding agent. Agents and skills are defined once and installed into OpenCode, Claude Code, Codex, or any future tool.
+Agents y skills definidos una sola vez, instalados en OpenCode, Claude Code, Codex, Cursor, Copilot o cualquier herramienta futura. Sin duplicar configuración. Sin depender de un vendor.
 
 ---
 
 ## Architecture
 
 ```
-angular-agent-skills/
-├── agents/                    # Universal agent definitions
+angular-agents-skills/
+├── agents/                          # Definiciones universales de agents
 │   ├── angular-architect/
-│   │   ├── agent.yaml         # Metadata (name, description, triggers, skills)
-│   │   └── agent.md           # Instructions (pure markdown)
+│   │   ├── agent.md                 # Instrucciones (markdown puro)
+│   │   └── configs/                 # Configuración por herramienta AI
+│   │       ├── opencode.yaml
+│   │       ├── claude.yaml
+│   │       ├── codex.yaml
+│   │       ├── cursor.yaml
+│   │       └── copilot.yaml
 │   ├── angular-migrator/
-│   │   ├── agent.yaml
-│   │   └── agent.md
+│   │   ├── agent.md
+│   │   └── configs/
 │   └── angular-reviewer/
-│       ├── agent.yaml
-│       └── agent.md
-├── adapters/                  # AI-specific format converters
-│   ├── opencode.ts
-│   ├── claude.ts
-│   └── codex.ts
-├── skills/                    # Reusable Angular knowledge
+│       ├── agent.md
+│       └── configs/
+├── skills/                          # Conocimiento Angular reutilizable
 │   ├── architecture/
 │   ├── components/
 │   ├── libraries/
 │   ├── performance/
 │   ├── quality/
 │   └── reactivity/
-├── src/                       # CLI and core logic
-│   ├── cli.ts
-│   ├── registry.ts
-│   ├── types.ts
-│   └── index.ts
-└── tests/                     # Test suite
+├── adapters/                        # Conversores de formato por herramienta
+│   ├── opencode/
+│   ├── claude/
+│   ├── codex/
+│   ├── cursor/
+│   └── copilot/
+└── src/                             # CLI y lógica core
+    ├── cli.ts
+    ├── registry.ts
+    └── types.ts
 ```
 
-### Universal Agent Format
+### Universal Agents
 
-Each agent is a directory with two files:
+Cada agent es un directorio con un `agent.md` (instrucciones en markdown puro) y un directorio `configs/` con archivos YAML por cada herramienta AI. Esta es la fuente de verdad. Los agents nunca dependen de ninguna herramienta específica.
 
-- **`agent.yaml`** — Universal metadata (name, description, triggers, skills)
-- **`agent.md`** — Pure markdown instructions (no frontmatter, no tool-specific syntax)
+### Skills
 
-This is the single source of truth. Agents never depend on any specific AI tool.
+Skills son módulos de conocimiento Angular reutilizables. Cada skill es un `SKILL.md` dentro de una categoría. Los agents referencian los skills relevantes para ejecutar sus tareas.
 
 ### Adapters
 
-Adapters transform universal agents into tool-specific formats:
+Adapters transforman agents universales al formato específico de cada herramienta:
 
-| Adapter | Output Format | Install Path |
+| Adapter | Formato de Salida | Path de Instalación |
 |---|---|---|
 | `opencode` | Markdown + YAML frontmatter | `.opencode/agents/` |
 | `claude` | Markdown + YAML frontmatter | `.claude/agents/` |
 | `codex` | TOML | `.codex/agents/` |
+| `cursor` | MDC (Markdown Custom) | `.cursor/rules/` |
+| `copilot` | Markdown con header | `.github/` |
 
-Adding a new AI tool requires only creating a new adapter file — no changes to agents or core logic.
+Agregar una nueva herramienta AI solo requiere crear un nuevo archivo adapter — sin modificar agents ni la lógica core.
 
 ---
 
 ## Installation
 
-### As CLI
+### CLI Global
 
 ```bash
-npm install -g angular-ai
+npm install -g angular-agents-skills
 ```
 
-### As dependency
+### Como dependencia del proyecto
 
 ```bash
-npm install angular-ai
+npm install angular-agents-skills
 ```
+
+### Node.js >= 18.0.0 requerido
 
 ---
 
 ## Usage
 
-### Install an agent
+### Instalar un agent para una herramienta
 
 ```bash
-# For OpenCode
-npx angular-ai install agent angular-architect --ai opencode
+# OpenCode
+npx angular-ai agent angular-architect --ai opencode
 
-# For Claude Code
-npx angular-ai install agent angular-architect --ai claude
+# Claude Code
+npx angular-ai agent angular-architect --ai claude
 
-# For Codex
-npx angular-ai install agent angular-architect --ai codex
+# Codex
+npx angular-ai agent angular-architect --ai codex
+
+# Cursor
+npx angular-ai agent angular-architect --ai cursor
+
+# Copilot
+npx angular-ai agent angular-architect --ai copilot
 ```
 
-### Install for all tools
+### Instalar un agent para todas las herramientas
 
 ```bash
-npx angular-ai install agent angular-architect --all
+npx angular-ai agent angular-architect --all
 ```
 
-### Custom target directory
+### Instalar una skill
 
 ```bash
-npx angular-ai install agent angular-architect \
-  --ai opencode \
-  --agent ./my-agents
+npx angular-ai skill signals-state-management --ai opencode
+npx angular-ai skill defer-blocks --all
 ```
 
-### List available agents
+### Directorio personalizado
+
+```bash
+npx angular-ai agent angular-architect --ai opencode --target ./my-agents
+npx angular-ai skill signals-effects --ai claude --target ./my-skills
+```
+
+### Listar recursos disponibles
 
 ```bash
 npx angular-ai list agents
-```
-
-### List available adapters
-
-```bash
+npx angular-ai list skills
 npx angular-ai list adapters
 ```
 
 ---
 
-## Agents
+## Available Agents
 
-| Agent | Purpose | Triggers |
+| Agent | Descripción | Triggers |
 |---|---|---|
-| `angular-architect` | Generate components, services, libraries | create component, generar, scaffold |
-| `angular-migrator` | Migrate legacy code to modern patterns | migrate, migrar, convert to signals |
-| `angular-reviewer` | Review code for best practices | review, revisar, code review |
+| `angular-architect` | Genera componentes, servicios y libraries siguiendo convenciones del proyecto y mejores prácticas. Usa signal-based inputs/outputs, standalone components, functional inject(). | create component, generar, scaffold, crear servicio, nueva library |
+| `angular-migrator` | Migra código Angular legacy a patrones modernos: template syntax (@if/@for/@switch), signals, standalone components, host bindings. Respeta funcionalidad existente. | migrate, migrar, convertir a signals, modernizar, upgrade |
+| `angular-reviewer` | Revisa PRs y código contra una checklist de performance, reactivity, arquitectura y testing. Genera reporte estructurado con blockers y sugerencias. | review, revisar, code review, PR review, check |
 
 ---
 
-## Skills
+## Available Skills
 
-Skills are reusable knowledge modules that agents reference:
+### Architecture
 
-| Category | Skills |
+| Skill | Descripción |
 |---|---|
-| **Architecture** | injection-tokens, overlay-animation-lifecycle |
-| **Components** | dynamic-components, modern-host-bindings, content-projection-ng, viewchild-contentchild-signals |
-| **Libraries** | standalone-component-library, monorepo-ng-packagr, library-versioning |
-| **Performance** | defer-blocks, control-flow-syntax |
-| **Quality** | pr-reviewer, vitest-angular-components |
-| **Reactivity** | signals-state-management, signals-inputs-outputs, signals-effects |
+| `injection-tokens` | Define y consume `InjectionToken`s tipados para configuración y patrones adapter/strategy |
+| `overlay-animation-lifecycle` | Coordina animaciones CSS de enter/leave para overlays (modal, popover, toast) sin Angular animations |
+
+### Components
+
+| Skill | Descripción |
+|---|---|
+| `dynamic-components` | Crea y monta componentes dinámicamente en runtime con `createComponent()` y `ApplicationRef` |
+| `modern-host-bindings` | Bindings dinámicos de clases, atributos y ARIA via objeto `host` en `@Component` |
+| `content-projection-ng` | Proyección de contenido con `ng-content`, `select` y `ngProjectAs` (slots nombrados y multi-slot) |
+| `viewchild-contentchild-signals` | Query de view/content children con funciones signal-based: `viewChild()`, `contentChild()`, `contentChildren()` |
+
+### Libraries
+
+| Skill | Descripción |
+|---|---|
+| `standalone-component-library` | Scaffold de library Angular standalone con ng-packagr, barrel exports y SCSS |
+| `monorepo-ng-packagr` | Estructura y operación de monorepo multi-library con ng-packagr, path aliases y scripts |
+| `library-versioning` | Actualización de versiones de libraries y manejo de peer dependencies |
+
+### Performance
+
+| Skill | Descripción |
+|---|---|
+| `defer-blocks` | Lazy-load de secciones de template con `@defer`, triggers (viewport, idle, interaction), placeholder, loading, error |
+| `control-flow-syntax` | Control flow nativo del template: `@if`, `@for` (con `track`), `@switch` en vez de directivas estructurales |
+
+### Quality
+
+| Skill | Descripción |
+|---|---|
+| `pr-reviewer` | Review de Pull Requests usando Azure DevOps MCP con reporte estructurado |
+| `vitest-angular-components` | Configuración y tests de componentes standalone con Vitest browser mode + Playwright |
+
+### Reactivity
+
+| Skill | Descripción |
+|---|---|
+| `signals-state-management` | Gestión de estado local con `signal()`, `computed()` y `linkedSignal()` |
+| `signals-inputs-outputs` | Migración de `@Input()`/`@Output()` a APIs signal-based: `input()`, `output()`, `model()` |
+| `signals-effects` | Uso correcto de `effect()` y `afterRenderEffect()` para side effects reactivos |
 
 ---
 
-## Development
+## Supported AI Tools
+
+| Tool | Formato | Path por Defecto | Notas |
+|---|---|---|---|
+| **OpenCode** | Markdown + YAML frontmatter | `.opencode/agents/` | Soporta `mode` y `permission` en frontmatter |
+| **Claude Code** | Markdown + YAML frontmatter | `.claude/agents/` | Soporta `tools` en frontmatter |
+| **Codex** | TOML | `.codex/agents/` | Instrucciones escapadas en `developer_instructions` |
+| **Cursor** | MDC (Markdown Custom) | `.cursor/rules/` | Incluye `alwaysApply: false` en frontmatter |
+| **GitHub Copilot** | Markdown | `.github/` | Archivo nombrado `copilot-instructions-<agent>.md` |
+
+### Agregar una nueva herramienta AI
+
+1. Crear `adapters/my-tool/index.ts` implementando la interfaz `Adapter`
+2. Registrar en `src/cli.ts` con `registerAdapter(createMyToolAdapter())`
+3. Listo. La CLI ahora soporta `--ai my-tool`
+
+---
+
+## Development & Contributing
+
+### Setup
 
 ```bash
-# Install dependencies
+# Instalar dependencias
 npm install
 
 # Build
 npm run build
 
-# Run tests
+# Watch (dev)
+npm run dev
+
+# Tests
 npm test
+
+# Tests en watch mode
+npm run test:watch
 
 # Type check
 npm run lint
 ```
 
----
+### Adding a new Agent
 
-## Adding a New Adapter
+1. Crear directorio `agents/<agent-name>/`
+2. Agregar `agent.md` con instrucciones en markdown puro (sin frontmatter, sin sintaxis de herramienta específica)
+3. Crear `configs/` con un YAML por cada herramienta AI soportada:
 
-1. Create `adapters/my-tool.ts`:
-```typescript
-import type { Adapter, AdapterOutput, InstallOptions, UniversalAgent } from '../src/types.js';
-
-export const myToolAdapter: Adapter = {
-  name: 'my-tool',
-  description: 'My AI Tool',
-  defaultDir: '.my-tool/agents',
-
-  generate(agent: UniversalAgent): AdapterOutput {
-    // Transform agent to tool-specific format
-    return {
-      filename: `${agent.metadata.name}.ext`,
-      content: `...`,
-    };
-  },
-
-  getInstallPath(options: InstallOptions): string {
-    const base = options.targetDir || this.defaultDir;
-    return `${base}/${options.agentName}.ext`;
-  },
-};
+```yaml
+# agents/my-agent/configs/opencode.yaml
+name: my-agent
+description: Descripción del agent
+mode: subagent
+permission:
+  edit: allow
+  bash: ask
 ```
 
-2. Register in `src/cli.ts`:
+### Adding a new Skill
+
+1. Crear directorio `skills/<category>/<skill-name>/`
+2. Agregar `SKILL.md` con metadata YAML al inicio y contenido en markdown
+
+### Adding a new Adapter
+
 ```typescript
-import { myToolAdapter } from '../adapters/my-tool.js';
-registerAdapter(myToolAdapter);
+import type { Adapter, AdapterOutput, UniversalAgent } from '../../src/types.js';
+
+export function createMyToolAdapter(): Adapter {
+  return {
+    name: 'my-tool',
+    description: 'My AI Tool',
+    defaultDir: '.my-tool/agents',
+    extension: 'md',
+
+    generate(agent: UniversalAgent, config?: Record<string, unknown>): AdapterOutput {
+      return {
+        filename: `${agent.metadata.name}.md`,
+        content: `---\ndescription: ${agent.metadata.description}\n---\n\n${agent.instructions.content}`,
+      };
+    },
+
+    getInstallPath(name: string, targetDir?: string): string {
+      const base = targetDir || this.defaultDir;
+      return `${base}/${name}.${this.extension}`;
+    },
+  };
+}
 ```
 
-3. Done. The CLI now supports `--ai my-tool`.
+Registrar en `src/cli.ts`:
+
+```typescript
+import { createMyToolAdapter } from '../adapters/my-tool/index.js';
+registerAdapter(createMyToolAdapter());
+```
 
 ---
 
